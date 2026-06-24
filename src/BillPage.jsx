@@ -11,6 +11,12 @@ const BillPage = () => {
   // Upgraded dynamic toast handling structure
   const [toast, setToast] = useState({ show: false, message: "", isSuccess: true });
   
+  // Modal state for PDF download question
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+
+  // NEW STATE: Tracks if the PDF option is unlocked/enabled
+  const [isPdfEnabled, setIsPdfEnabled] = useState(false);
+
   // Local state to handle dynamic quantity updates
   const [billItems, setBillItems] = useState(location.state?.items || []);
   const addressData = location.state?.address || {};
@@ -23,7 +29,7 @@ const BillPage = () => {
     }, 3000); 
   };
 
-  // --- FIXED: Quantity Increase/Decrease Handler (1 ku keezha pogaadhu) ---
+  // --- Quantity Increase/Decrease Handler ---
   const handleQuantityChange = (index, operation) => {
     const updatedItems = [...billItems];
     const currentQty = updatedItems[index].quantity || 1;
@@ -31,7 +37,6 @@ const BillPage = () => {
     if (operation === 'increase') {
       updatedItems[index].quantity = currentQty + 1;
     } else if (operation === 'decrease') {
-      // --- LOCKED AT 1: Remove condition completely canceled ---
       if (currentQty > 1) {
         updatedItems[index].quantity = currentQty - 1;
       } else {
@@ -47,11 +52,19 @@ const BillPage = () => {
   const sgst = Math.round(subtotal * 0.09);
   const grandTotal = subtotal + cgst + sgst + (subtotal > 0 ? deliveryCharge : 0);
 
-  const handleDownloadPDF = async () => {
-    if (billItems.length === 0) {
-      showToastMessage("Nothing to export. Summary shelf is empty! ⚠️", false);
-      return;
-    }
+  // Helper logic to navigate to payment screen
+  const proceedToNextPage = () => {
+    navigate('/payment', { 
+      state: { 
+        items: billItems, 
+        address: addressData,
+        totalAmount: grandTotal
+      } 
+    });
+  };
+
+  // Combined function handling core PDF downloads
+  const generateAndDownloadPDF = async () => {
     const element = billRef.current;
     const canvas = await html2canvas(element, { scale: 2, useCORS: true, logging: false });
     const imgData = canvas.toDataURL('image/png');
@@ -74,26 +87,56 @@ const BillPage = () => {
     }
 
     pdf.save(`Leafy_Vibe_Quotation_${Date.now()}.pdf`);
-    showToastMessage("Quotation PDF downloaded successfully! 📄", true);
   };
 
+  // Standalone Download Button handler (Only works when enabled now)
+  const handleDownloadPDF = async () => {
+    if (!isPdfEnabled) return; // Guard clause if directly bypassed
+
+    if (billItems.length === 0) {
+      showToastMessage("Nothing to export. Summary shelf is empty! ⚠️", false);
+      return;
+    }
+    try {
+      await generateAndDownloadPDF();
+      showToastMessage("Quotation PDF downloaded successfully! 📄", true);
+    } catch (error) {
+      showToastMessage("Failed to download PDF. Please try again.", false);
+    }
+  };
+
+  // Clicked 'Proceed to Payment' -> Shows prompt choices
   const handleFinalOrderConfirm = () => {
     if (billItems.length === 0) {
       showToastMessage("Your cart is empty! ⚠️", false);
       return;
     }
+    setShowConfirmModal(true);
+  };
 
-    showToastMessage("Order summary confirmed! Opening Payment... 💳🌿", true);
+  // User selects "YES" -> Unlock PDF layout, download first, then go to payment page
+  const handleConfirmWithPDF = async () => {
+    setShowConfirmModal(false);
+    setIsPdfEnabled(true); // --- UNLOCKED: PDF Button is now active ---
+    showToastMessage("Downloading summary & directing to payment... 📄🌿", true);
     
+    try {
+      await generateAndDownloadPDF();
+      setTimeout(() => {
+        proceedToNextPage();
+      }, 1500);
+    } catch (err) {
+      proceedToNextPage();
+    }
+  };
+
+  // User selects "NO" -> Direct redirect skip sequence (Keeps PDF disabled)
+  const handleConfirmWithoutPDF = () => {
+    setShowConfirmModal(false);
+    showToastMessage("Opening Payment... 💳🌿", true);
     setTimeout(() => {
-      navigate('/payment', { 
-        state: { 
-          items: billItems, 
-          address: addressData,
-          totalAmount: grandTotal
-        } 
-      });
-    }, 2000);
+      proceedToNextPage();
+    }, 1500);
   };
 
   return (
@@ -157,12 +200,110 @@ const BillPage = () => {
           color: #fbf9f6;
           border-color: #2e4431;
         }
+
+        /* Modal Layout Custom CSS Rules */
+        .modal-overlay {
+          position: fixed;
+          top: 0; left: 0; right: 0; bottom: 0;
+          background-color: rgba(27, 46, 30, 0.4);
+          backdrop-filter: blur(4px);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 3000;
+        }
+        .modal-card {
+          background: #ffffff;
+          padding: 30px;
+          border-radius: 18px;
+          width: 90%;
+          max-width: 400px;
+          box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+          text-align: center;
+          border: 1px solid #e0e5dd;
+        }
+        .modal-title {
+          font-family: 'Poppins', sans-serif;
+          font-size: 18px;
+          font-weight: 600;
+          color: #1b2e1e;
+          margin: 0 0 10px 0;
+        }
+        .modal-desc {
+          font-family: 'Poppins', sans-serif;
+          font-size: 14px;
+          color: #6a7566;
+          margin: 0 0 24px 0;
+          line-height: 1.5;
+        }
+        .modal-btn-group {
+          display: flex;
+          gap: 12px;
+          justify-content: center;
+        }
+        .modal-btn-yes {
+          background-color: #2e4431;
+          color: #fbf9f6;
+          border: none;
+          padding: 10px 22px;
+          border-radius: 8px;
+          cursor: pointer;
+          font-weight: 500;
+          font-size: 13px;
+        }
+        .modal-btn-no {
+          background-color: transparent;
+          color: #7a8574;
+          border: 1px solid #e0e5dd;
+          padding: 10px 22px;
+          border-radius: 8px;
+          cursor: pointer;
+          font-weight: 500;
+          font-size: 13px;
+        }
+
+        /* Disabled configuration for the PDF Button styling state */
+        .pdf-btn {
+          background-color: transparent;
+          color: #7a8574;
+          border: 1px solid #e0e5dd;
+          padding: 12px 20px;
+          border-radius: 10px;
+          cursor: pointer;
+          font-weight: 500;
+          font-size: 12px;
+          width: 100%;
+          font-family: '"Poppins", sans-serif;
+          transition: all 0.2s ease;
+          text-align: center;
+        }
+        .pdf-btn:disabled {
+          background-color: #f4f6f3;
+          color: #b0b8ad;
+          border-color: #e6eae4;
+          cursor: not-allowed;
+          opacity: 0.7;
+        }
       `}</style>
 
       {/* --- DYNAMIC TRANSITION TOAST CONTROLLER --- */}
       <div className={`leafy-toast ${toast.show ? 'show' : ''} ${toast.isSuccess ? 'toast-success' : 'toast-error'}`}>
         <span>{toast.message}</span>
       </div>
+
+      {/* --- CONDITIONAL DOWNLOAD QUESTION PROMPT MODAL --- */}
+      {showConfirmModal && (
+        <div className="modal-overlay">
+          <div className="modal-card">
+            <h3 className="modal-title">Download PDF Summary?</h3>
+            <p className="modal-desc">Would you like to download your bill summary invoice copy before moving to the payment desk?</p>
+            <div className="modal-btn-group">
+              <button className="modal-btn-yes" onClick={handleConfirmWithPDF}>Yes, Download</button>
+              <button className="modal-btn-no" onClick={handleConfirmWithoutPDF}>No, Continue</button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div style={billContainerStyle}>
         <div ref={billRef} style={{ backgroundColor: '#ffffff', padding: '15px' }}>
@@ -236,7 +377,12 @@ const BillPage = () => {
             💳 Proceed to Payment
           </button>
           <div style={{ display: 'flex', gap: '12px' }}>
-            <button onClick={handleDownloadPDF} style={backBtnStyle}>
+            {/* Added standard className "pdf-btn" and linked disabled property to state */}
+            <button 
+              onClick={handleDownloadPDF} 
+              className="pdf-btn"
+              disabled={!isPdfEnabled}
+            >
               📄 Download Summary
             </button>
             <button onClick={() => navigate('/cart')} style={backBtnStyle}>
