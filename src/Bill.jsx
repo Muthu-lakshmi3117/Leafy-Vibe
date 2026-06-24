@@ -3,17 +3,13 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
 
-const BillPage = () => {
+const Bill = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const billRef = useRef();
 
-
   const [toast, setToast] = useState({ show: false, message: "", isSuccess: true });
-  
   const [showConfirmModal, setShowConfirmModal] = useState(false);
-
-  
   const [isPdfEnabled, setIsPdfEnabled] = useState(false);
 
   const [billItems, setBillItems] = useState(location.state?.items || []);
@@ -43,13 +39,11 @@ const BillPage = () => {
     setBillItems(updatedItems);
   };
 
- 
   const subtotal = billItems.reduce((sum, item) => sum + ((Number(item.price) || 0) * (Number(item.quantity) || 1)), 0);
   const cgst = Math.round(subtotal * 0.09);
   const sgst = Math.round(subtotal * 0.09);
   const grandTotal = subtotal + cgst + sgst + (subtotal > 0 ? deliveryCharge : 0);
 
- 
   const proceedToNextPage = () => {
     navigate('/payment', { 
       state: { 
@@ -60,7 +54,6 @@ const BillPage = () => {
     });
   };
 
-  
   const generateAndDownloadPDF = async () => {
     const element = billRef.current;
     const canvas = await html2canvas(element, { scale: 2, useCORS: true, logging: false });
@@ -86,9 +79,8 @@ const BillPage = () => {
     pdf.save(`Leafy_Vibe_Quotation_${Date.now()}.pdf`);
   };
 
-  
   const handleDownloadPDF = async () => {
-    if (!isPdfEnabled) return;
+    if (!isPdfEnabled) return; 
 
     if (billItems.length === 0) {
       showToastMessage("Nothing to export. Summary shelf is empty! ⚠️", false);
@@ -101,6 +93,7 @@ const BillPage = () => {
       showToastMessage("Failed to download PDF. Please try again.", false);
     }
   };
+
   const handleFinalOrderConfirm = () => {
     if (billItems.length === 0) {
       showToastMessage("Your cart is empty! ⚠️", false);
@@ -111,7 +104,7 @@ const BillPage = () => {
 
   const handleConfirmWithPDF = async () => {
     setShowConfirmModal(false);
-    setIsPdfEnabled(true);
+    setIsPdfEnabled(true); 
     showToastMessage("Downloading summary & directing to payment... 📄🌿", true);
     
     try {
@@ -123,6 +116,7 @@ const BillPage = () => {
       proceedToNextPage();
     }
   };
+
   const handleConfirmWithoutPDF = () => {
     setShowConfirmModal(false);
     showToastMessage("Opening Payment... 💳🌿", true);
@@ -193,7 +187,6 @@ const BillPage = () => {
           border-color: #2e4431;
         }
 
-        /* Modal Layout Custom CSS Rules */
         .modal-overlay {
           position: fixed;
           top: 0; left: 0; right: 0; bottom: 0;
@@ -264,7 +257,7 @@ const BillPage = () => {
           font-weight: 500;
           font-size: 12px;
           width: 100%;
-          font-family: '"Poppins", sans-serif;
+          font-family: 'Poppins', sans-serif;
           transition: all 0.2s ease;
           text-align: center;
         }
@@ -277,12 +270,10 @@ const BillPage = () => {
         }
       `}</style>
 
-     
       <div className={`leafy-toast ${toast.show ? 'show' : ''} ${toast.isSuccess ? 'toast-success' : 'toast-error'}`}>
         <span>{toast.message}</span>
       </div>
 
-      
       {showConfirmModal && (
         <div className="modal-overlay">
           <div className="modal-card">
@@ -329,6 +320,7 @@ const BillPage = () => {
             {billItems.map((item, index) => (
               <div key={index} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '13px' }}>
                 <span style={{ flex: 2, textTransform: 'capitalize', color: '#4a5347', textAlign: 'left', paddingRight: '5px' }}>{item.title}</span>
+                
                 <div style={{ flex: 1.2, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
                   <button type="button" className="qty-control-btn" onClick={() => handleQuantityChange(index, 'decrease')}>-</button>
                   <span style={{ fontFamily: 'Poppins', fontSize: '13px', fontWeight: '500', color: '#1b2e1e', minWidth: '15px', textAlign: 'center' }}>
@@ -366,7 +358,6 @@ const BillPage = () => {
             💳 Proceed to Payment
           </button>
           <div style={{ display: 'flex', gap: '12px' }}>
-
             <button 
               onClick={handleDownloadPDF} 
               className="pdf-btn"
@@ -391,4 +382,4 @@ const summaryRowStyle = { display: 'flex', justifyContent: 'space-between', font
 const backBtnStyle = { backgroundColor: 'transparent', color: '#7a8574', border: '1px solid #e0e5dd', padding: '12px 20px', borderRadius: '10px', cursor: 'pointer', fontWeight: '500', fontSize: '12px', width: '100%', fontFamily: '"Poppins", sans-serif', transition: 'all 0.2s ease', textAlign: 'center' };
 const payBtnStyle = { backgroundColor: '#2e4431', color: '#fbf9f6', border: 'none', padding: '14px 20px', borderRadius: '10px', cursor: 'pointer', fontWeight: '500', fontSize: '13px', width: '100%', fontFamily: '"Poppins", sans-serif', letterSpacing: '0.5px', transition: 'all 0.2s ease' };
 
-export default BillPage;
+export default Bill;

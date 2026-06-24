@@ -161,6 +161,8 @@ const CartPage = () => {
         </div>
       ) : (
         <div className="main-layout-container" style={mainLayoutContainer}>
+          
+          {/* LEFT PANEL */}
           <div className="left-products-panel" style={{ width: '66%', boxSizing: 'border-box' }}>
             <div style={leftGridWrapperStyle}>
               {cartItems.map((item, index) => {
