@@ -17,12 +17,8 @@ const CartPage = () => {
       setTimeout(() => navigate("/login"), 2000);
       return; 
     }
-
-    // Fetch user specific cart lines from database
     axios.get(`http://localhost:3000/carts`, { params: { userId: savedUserId } })
       .then((res) => {
-        // --- FIXED CRITICAL FILTER: Buy Now & Reorder bypass check ---
-        // isDirectCheckout flag true-ah irundha adhai cart summary view-la irundhu reject panrom
         const regularCartItems = res.data.filter(item => item.isDirectCheckout !== true);
         setCartItems(regularCartItems); 
       })
@@ -165,8 +161,6 @@ const CartPage = () => {
         </div>
       ) : (
         <div className="main-layout-container" style={mainLayoutContainer}>
-          
-          {/* LEFT PANEL */}
           <div className="left-products-panel" style={{ width: '66%', boxSizing: 'border-box' }}>
             <div style={leftGridWrapperStyle}>
               {cartItems.map((item, index) => {
@@ -224,8 +218,6 @@ const CartPage = () => {
               })}
             </div>
           </div>
-
-          {/* RIGHT PANEL */}
           <div className="right-bill-panel" style={summaryPanelStyle}>
             <h3 style={summaryTitleStyle}>Order Summary</h3>
             <div style={{ width: '100%', height: '1px', background: 'rgba(42, 54, 38, 0.1)', marginBottom: '15px' }}></div>
@@ -270,8 +262,6 @@ const CartPage = () => {
     </div>
   );
 };
-
-// Styles Configuration Layer
 const pageStyle = { padding: '60px 40px', fontFamily: '"Poppins", sans-serif', backgroundColor: '#f6f5f0', minHeight: '100vh', boxSizing: 'border-box' };
 const mainLayoutContainer = { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '30px', width: '100%', maxWidth: '1200px', margin: '0 auto' };
 const leftGridWrapperStyle = { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '20px', width: '100%', boxSizing: 'border-box' };

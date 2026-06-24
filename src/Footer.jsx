@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 const Footer = () => {
   return (
     <footer style={footerStyle}>
-      {/* Premium Typography & Fonts Injector */}
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Poppins:wght@300;400;500;600&display=swap');
         
@@ -38,8 +37,6 @@ const Footer = () => {
       `}</style>
 
       <div style={containerStyle}>
-        
-        {/* COLUMN 1: BRAND LOGO & TAGLINE */}
         <div style={columnStyle}>
           <h2 style={logoStyle}>leafy vibe</h2>
           <p style={descriptionStyle}>
@@ -54,7 +51,7 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* COLUMN 2: QUICK NAVIGATION */}
+  
         <div style={columnStyle}>
           <h4 style={headingStyle}>Explore</h4>
           <ul style={listStyle}>
@@ -65,7 +62,6 @@ const Footer = () => {
           </ul>
         </div>
 
-        {/* COLUMN 3: STUDIO TIMINGS & INFO */}
         <div style={columnStyle}>
           <h4 style={headingStyle}>Studio Hours</h4>
           <p style={infoTextStyle}>📍 Madurai, Tamil Nadu, India</p>
@@ -75,7 +71,7 @@ const Footer = () => {
 
       </div>
 
-      {/* LOWER BOTTOM: COPYRIGHT BAR */}
+      
       <div style={bottomBarStyle}>
         <div style={{ width: '100%', height: '1px', backgroundColor: 'rgba(46, 68, 49, 0.06)', marginBottom: '20px' }}></div>
         <p style={copyrightTextStyle}>
@@ -85,15 +81,13 @@ const Footer = () => {
     </footer>
   );
 };
-
-// --- PREMIUM MINIMALIST FOOTER STYLING ---
 const footerStyle = {
   backgroundColor: '#ffffff',
   borderTop: '1px solid rgba(46, 68, 49, 0.05)',
   padding: '60px 45px 30px 45px',
   width: '100%',
   boxSizing: 'border-box',
-  marginTop: 'auto' // Content கம்மியா இருந்தாலும் ஃபூட்டரை பாட்டம்ல லாக் பண்ணும்
+  marginTop: 'auto'
 };
 
 const containerStyle = {

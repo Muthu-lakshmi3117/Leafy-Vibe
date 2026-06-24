@@ -7,8 +7,6 @@ const Shop = () => {
   const [selectedCategory, setSelectedCategory] = useState("All")
   const [err, setErr] = useState("")
   const [loading, setLoading] = useState(true)
-  
-  // Toast Alert State
   const [toast, setToast] = useState({ show: false, message: "", isSuccess: true })
   
   const navigate = useNavigate()
@@ -27,8 +25,6 @@ const Shop = () => {
         setLoading(false)
       })
   }, [])
-
-  // useMemo filtered list logic
   const filteredProducts = useMemo(() => {
     if (selectedCategory === "All") return products;
     return products.filter(item => item.category?.toLowerCase() === selectedCategory.toLowerCase())
@@ -50,7 +46,6 @@ const Shop = () => {
       return 
     }
 
-    // --- FIXED: Added isDirectCheckout parameter mapped to redirect value ---
     const payload = {
       userId: savedUserId,
       productId: item._id || item.id,
@@ -58,7 +53,7 @@ const Shop = () => {
       price: item.price,   
       image: item.image,   
       quantity: 1,
-      isDirectCheckout: redirectToCheckout // Buy Now-க்கு True-ஆ போகும், Add to Cart-க்கு False-ஆ போகும்
+      isDirectCheckout: redirectToCheckout 
     }
 
     axios.post("http://localhost:3000/cart/add", payload)
@@ -69,7 +64,6 @@ const Shop = () => {
         window.dispatchEvent(new Event('cartUpdated'));
 
         if (redirectToCheckout) {
-          // --- FIXED: Direct-a Single Item matrix data-voda Address page-ku navigate aagum ---
           showToastMessage("Processing Buy Now! Redirecting... ⚡🏡", true);
           setTimeout(() => {
             navigate("/address", { state: { items: [payload] } }); 
@@ -231,16 +225,12 @@ const Shop = () => {
           100% { background-position: -200% 0; }
         }
       `}</style>
-
-      {/* --- DYNAMIC CUSTOM TOAST --- */}
       <div 
         className={`leafy-toast ${toast.show ? 'show' : ''}`}
         style={{ backgroundColor: toast.isSuccess ? 'rgba(46, 68, 49, 0.95)' : 'rgba(179, 93, 93, 0.95)' }}
       >
         <span>{toast.message}</span>
       </div>
-
-      {/* --- TITLE HEADER --- */}
       <div style={{ textAlign: 'center', marginBottom: '40px' }}>
         <h1 style={{ 
           fontSize: '32px', 
@@ -257,8 +247,6 @@ const Shop = () => {
           Curated Botanical Store
         </span>
       </div>
-
-      {/* --- CATEGORIES FILTER BAR --- */}
       <div style={{ 
         display: 'flex', 
         justifyContent: 'center', 
@@ -278,12 +266,9 @@ const Shop = () => {
           </button>
         ))}
       </div>
-
-      {/* --- MAIN PRODUCTS AREA --- */}
       <div style={{ width: '100%', maxWidth: '1200px', margin: '0 auto' }}>
         {err && <p style={{ color: '#733d3d', textAlign: 'center', fontSize: '14px', fontWeight: '500' }}>{err}</p>}
 
-        {/* LOADING SHIMMER STATE */}
         {loading ? (
           <div className="shop-grid">
             {[1, 2, 3, 4].map((n) => (

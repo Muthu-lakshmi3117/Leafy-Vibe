@@ -220,7 +220,6 @@ const Navbar = () => {
         }
       `}</style>
 
-      {/* BRANDING SECTION */}
       <div style={logoWrapperStyle}>
         <Link to="/" style={logoStyle}>
           leafy vibe
@@ -242,7 +241,7 @@ const Navbar = () => {
           </div>
         </Link>
 
-        {/* DYNAMIC AVATAR CONTROL INTERACTION */}
+        
         <div className="profile-container" ref={dropdownRef}>
           {isLoggedIn ? (
             <>
@@ -277,8 +276,6 @@ const Navbar = () => {
     </nav>
   );
 };
-
-// --- PREMIUM BLURRED GLASS CODES CONFIGS ---
 const navStyle = {
   display: 'flex',
   justifyContent: 'space-between',

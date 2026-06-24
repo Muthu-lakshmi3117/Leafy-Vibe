@@ -21,11 +21,9 @@ const Products = () => {
       alert("Please fill required fields! 🌿")
       return
     }
-
-    // Direct POST request to server
     axios.post("http://localhost:3000/products", plant)
       .then((res) => {
-        alert(res.data) // Server message clear alert
+        alert(res.data)
         setPlant({ title: "", price: "", category: "", image: "", description: "" }) // Form reset
       })
       .catch((error) => {
@@ -51,8 +49,6 @@ const Products = () => {
         body { margin: 0; background-color: #fbf9f6; }
         .plant-input::placeholder { color: #c2c9bc; font-size: 12px; }
       `}</style>
-
-      {/* --- CENTRAL ADD PRODUCT FORM CARD --- */}
       <div style={{
         width: '100%',
         maxWidth: '320px', 

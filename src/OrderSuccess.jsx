@@ -5,12 +5,12 @@ const OrderSuccess = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // --- FIXED: Exact-ah 2 செகண்ட் (2000ms) கழிச்சு automatic-ah profile page-க்கு மாறும் ---
+  
     const timer = setTimeout(() => {
-      navigate('/profile'); // Ungaloda orders list irukra profile path illa home page path-ah kuduthukonga
+      navigate('/profile');
     }, 2000);
 
-    // Component unmount aagumpothu timer-ah clear panrom (Memory safety)
+ 
     return () => clearTimeout(timer);
   }, [navigate]);
 
@@ -30,7 +30,6 @@ const OrderSuccess = () => {
       `}</style>
 
       <div style={cardStyle}>
-        {/* Animated Big Botanical Vibe Icon */}
         <div className="animate-leaf" style={iconCircleStyle}>
           🌿
         </div>
@@ -42,8 +41,6 @@ const OrderSuccess = () => {
         <p style={subTextStyle}>
           Unga botanical plants ordervai naanga purniyama confirm pannitom thala!
         </p>
-
-        {/* Dynamic Small Loader Strip */}
         <div style={loaderContainerStyle}>
           <div style={loaderBarStyle}></div>
         </div>
@@ -52,7 +49,6 @@ const OrderSuccess = () => {
   );
 };
 
-// --- LEAFY VIBE PREMIUM SUCCESS THEME STYLES ---
 const pageContainerStyle = {
   display: 'flex',
   justifyContent: 'center',
@@ -131,7 +127,6 @@ const loaderBarStyle = {
   animation: 'slideLoader 2s linear forwards'
 };
 
-// CSS Keyframe inline addition via standard inject format
 const styleSheet = document.styleSheets[0];
 styleSheet.insertRule(`
   @keyframes slideLoader {

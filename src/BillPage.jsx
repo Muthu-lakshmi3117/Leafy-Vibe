@@ -8,16 +8,14 @@ const BillPage = () => {
   const navigate = useNavigate();
   const billRef = useRef();
 
-  // Upgraded dynamic toast handling structure
+
   const [toast, setToast] = useState({ show: false, message: "", isSuccess: true });
   
-  // Modal state for PDF download question
   const [showConfirmModal, setShowConfirmModal] = useState(false);
 
-  // NEW STATE: Tracks if the PDF option is unlocked/enabled
+  
   const [isPdfEnabled, setIsPdfEnabled] = useState(false);
 
-  // Local state to handle dynamic quantity updates
   const [billItems, setBillItems] = useState(location.state?.items || []);
   const addressData = location.state?.address || {};
   const deliveryCharge = 60;
@@ -29,7 +27,6 @@ const BillPage = () => {
     }, 3000); 
   };
 
-  // --- Quantity Increase/Decrease Handler ---
   const handleQuantityChange = (index, operation) => {
     const updatedItems = [...billItems];
     const currentQty = updatedItems[index].quantity || 1;
@@ -46,13 +43,13 @@ const BillPage = () => {
     setBillItems(updatedItems);
   };
 
-  // Dynamic Real-time Calculations Based on billItems State
+ 
   const subtotal = billItems.reduce((sum, item) => sum + ((Number(item.price) || 0) * (Number(item.quantity) || 1)), 0);
   const cgst = Math.round(subtotal * 0.09);
   const sgst = Math.round(subtotal * 0.09);
   const grandTotal = subtotal + cgst + sgst + (subtotal > 0 ? deliveryCharge : 0);
 
-  // Helper logic to navigate to payment screen
+ 
   const proceedToNextPage = () => {
     navigate('/payment', { 
       state: { 
@@ -63,7 +60,7 @@ const BillPage = () => {
     });
   };
 
-  // Combined function handling core PDF downloads
+  
   const generateAndDownloadPDF = async () => {
     const element = billRef.current;
     const canvas = await html2canvas(element, { scale: 2, useCORS: true, logging: false });
@@ -89,9 +86,9 @@ const BillPage = () => {
     pdf.save(`Leafy_Vibe_Quotation_${Date.now()}.pdf`);
   };
 
-  // Standalone Download Button handler (Only works when enabled now)
+  
   const handleDownloadPDF = async () => {
-    if (!isPdfEnabled) return; // Guard clause if directly bypassed
+    if (!isPdfEnabled) return;
 
     if (billItems.length === 0) {
       showToastMessage("Nothing to export. Summary shelf is empty! ⚠️", false);
@@ -104,8 +101,6 @@ const BillPage = () => {
       showToastMessage("Failed to download PDF. Please try again.", false);
     }
   };
-
-  // Clicked 'Proceed to Payment' -> Shows prompt choices
   const handleFinalOrderConfirm = () => {
     if (billItems.length === 0) {
       showToastMessage("Your cart is empty! ⚠️", false);
@@ -114,10 +109,9 @@ const BillPage = () => {
     setShowConfirmModal(true);
   };
 
-  // User selects "YES" -> Unlock PDF layout, download first, then go to payment page
   const handleConfirmWithPDF = async () => {
     setShowConfirmModal(false);
-    setIsPdfEnabled(true); // --- UNLOCKED: PDF Button is now active ---
+    setIsPdfEnabled(true);
     showToastMessage("Downloading summary & directing to payment... 📄🌿", true);
     
     try {
@@ -129,8 +123,6 @@ const BillPage = () => {
       proceedToNextPage();
     }
   };
-
-  // User selects "NO" -> Direct redirect skip sequence (Keeps PDF disabled)
   const handleConfirmWithoutPDF = () => {
     setShowConfirmModal(false);
     showToastMessage("Opening Payment... 💳🌿", true);
@@ -262,7 +254,6 @@ const BillPage = () => {
           font-size: 13px;
         }
 
-        /* Disabled configuration for the PDF Button styling state */
         .pdf-btn {
           background-color: transparent;
           color: #7a8574;
@@ -286,12 +277,12 @@ const BillPage = () => {
         }
       `}</style>
 
-      {/* --- DYNAMIC TRANSITION TOAST CONTROLLER --- */}
+     
       <div className={`leafy-toast ${toast.show ? 'show' : ''} ${toast.isSuccess ? 'toast-success' : 'toast-error'}`}>
         <span>{toast.message}</span>
       </div>
 
-      {/* --- CONDITIONAL DOWNLOAD QUESTION PROMPT MODAL --- */}
+      
       {showConfirmModal && (
         <div className="modal-overlay">
           <div className="modal-card">
@@ -338,8 +329,6 @@ const BillPage = () => {
             {billItems.map((item, index) => (
               <div key={index} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '13px' }}>
                 <span style={{ flex: 2, textTransform: 'capitalize', color: '#4a5347', textAlign: 'left', paddingRight: '5px' }}>{item.title}</span>
-                
-                {/* Dynamic Quantity Action Block Buttons */}
                 <div style={{ flex: 1.2, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
                   <button type="button" className="qty-control-btn" onClick={() => handleQuantityChange(index, 'decrease')}>-</button>
                   <span style={{ fontFamily: 'Poppins', fontSize: '13px', fontWeight: '500', color: '#1b2e1e', minWidth: '15px', textAlign: 'center' }}>
@@ -377,7 +366,7 @@ const BillPage = () => {
             💳 Proceed to Payment
           </button>
           <div style={{ display: 'flex', gap: '12px' }}>
-            {/* Added standard className "pdf-btn" and linked disabled property to state */}
+
             <button 
               onClick={handleDownloadPDF} 
               className="pdf-btn"

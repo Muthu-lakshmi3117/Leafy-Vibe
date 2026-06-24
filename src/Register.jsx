@@ -11,19 +11,15 @@ function Register() {
     num: "",
     email: "",
     address: "", 
-    pincode: "", // --- ADDED: Pincode field in state ---
+    pincode: "",
     pass: "",
     cp: ""
   })
-
-  // --- Toast Notification Alert State ---
   const [toast, setToast] = useState({ show: false, message: "", isSuccess: true })
 
   let chg = (e) => {
     setval({ ...val, [e.target.name]: e.target.value })
   }
-
-  // --- Toast Message Helper ---
   const showToastMessage = (message, isSuccess = true) => {
     setToast({ show: true, message, isSuccess });
     setTimeout(() => {
@@ -32,7 +28,6 @@ function Register() {
   };
 
   let give = () => {
-    // --- UPDATED: Added !val.pincode validation check ---
     if (!val.name || !val.dob || !val.num || !val.email || !val.address || !val.pincode || !val.pass || !val.cp) {
       showToastMessage("Pls fill all fields to join. 🌿", false);
       return; 
@@ -69,7 +64,6 @@ function Register() {
       boxSizing: 'border-box',
       position: 'relative'
     }}>
-      {/* Dynamic CSS for Premium Shaded Toast */}
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Poppins:wght@300;400;500;600&display=swap');
         body { margin: 0; padding: 0; background-color: #fbf9f6; }
@@ -117,13 +111,9 @@ function Register() {
           color: #5c2c2c;
         }
       `}</style>
-
-      {/* PREMIUM DYNAMIC CUSTOM TOAST INJECTOR */}
       <div className={`leafy-toast ${toast.show ? 'show' : ''} ${toast.isSuccess ? 'toast-success' : 'toast-error'}`}>
         <span>{toast.message}</span>
       </div>
-
-      {/* Center Grid Wrapper Panel */}
       <div style={{
         display: 'flex',
         flex: 1,
@@ -132,8 +122,6 @@ function Register() {
         padding: '40px 20px', 
         boxSizing: 'border-box'
       }}>
-
-        {/* CONTENT BOX - Width light-ah adjust panniruken form clutter aagama iruka */}
         <div style={{
           width: '90%',
           maxWidth: '340px', 
@@ -144,8 +132,6 @@ function Register() {
           fontFamily: '"Poppins", sans-serif',
           boxSizing: 'border-box'
         }}>
-          
-          {/* BRAND LOGO */}
           <div style={{ textTransform: 'lowercase', textAlign: 'center', marginBottom: '25px' }}>
             <h1 style={{ 
               fontFamily: '"Cinzel Decorative", serif', 
@@ -168,8 +154,6 @@ function Register() {
               fontWeight: '400'
             }}>Botanical Studio & Space</span>
           </div>
-
-          {/* Form Container */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
             
             <div>
@@ -191,8 +175,6 @@ function Register() {
               <label style={labelStyle}>Email Address</label>
               <input type='email' name='email' placeholder='hello@leafyvibe.com' onChange={chg} style={inputStyle} className="aesthetic-input"/>
             </div>
-
-            {/* --- ADDED: Address Grid with Textarea & Pincode side-by-side spacing --- */}
             <div>
               <label style={labelStyle}>Address</label>
               <textarea 
@@ -208,8 +190,6 @@ function Register() {
                 }}
               />
             </div>
-
-            {/* --- ADDED: Pincode input box layout --- */}
             <div>
               <label style={labelStyle}>Pincode</label>
               <input 
@@ -231,8 +211,6 @@ function Register() {
               <label style={labelStyle}>Confirm Password</label>
               <input type='password' name='cp' placeholder='••••••••' onChange={chg} style={inputStyle} className="aesthetic-input"/>
             </div>
-            
-            {/* Register Button */}
             <button onClick={give} style={{ 
               marginTop: '8px', 
               backgroundColor: '#2e4431', 
@@ -252,8 +230,6 @@ function Register() {
             >
               Register
             </button>
-
-            {/* LOGIN LINK */}
             <div style={{ 
               textAlign: 'center', 
               marginTop: '10px', 

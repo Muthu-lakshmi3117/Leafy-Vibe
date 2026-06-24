@@ -5,12 +5,8 @@ const Orders = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  
-  // Custom Toast State Setup
   const [toast, setToast] = useState({ show: false, message: "", isSuccess: true });
-  // Cancel Confirm Modal Dialog State
   const [confirmModal, setConfirmModal] = useState({ show: false, orderId: null });
-
   const userId = sessionStorage.getItem("userId");
 
   useEffect(() => {
@@ -56,7 +52,6 @@ const Orders = () => {
   };
 
   const triggerCancelProcess = (orderId) => {
-    // Native window.confirm-uku badhalaa custom pop-up state trigger aagum
     setConfirmModal({ show: true, orderId });
   };
 
@@ -153,13 +148,11 @@ const Orders = () => {
         .modal-btn-close { background: #e2e8f0; color: #475569; border: none; padding: 8px 18px; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 500; }
       `}</style>
 
-      {/* --- BOTANICAL TOAST CONTAINER DISPLAY LAYER --- */}
+ 
       <div className={`leafy-toast ${toast.show ? 'show' : ''}`}
         style={{ backgroundColor: toast.isSuccess ? 'rgba(46, 68, 49, 0.95)' : 'rgba(179, 93, 93, 0.95)' }}>
         <span>{toast.message}</span>
       </div>
-
-      {/* --- CUSTOM ALERT MODAL CONFIRM DIALOG BANNER --- */}
       {confirmModal.show && (
         <div className="modal-overlay">
           <div className="modal-box">
@@ -265,8 +258,6 @@ const Orders = () => {
     </div>
   );
 };
-
-// Pure layout styling metrics layers (Unchanged setup)
 const containerStyle = { maxWidth: '850px', margin: '40px auto', padding: '0 20px', minHeight: '75vh' };
 const titleStyle = { fontFamily: '"Cinzel Decorative", serif', color: '#1b2e1e', fontSize: '26px', fontWeight: '700', margin: '0 0 4px 0' };
 const subTitleStyle = { fontFamily: '"Poppins", sans-serif', color: '#82927e', fontSize: '13px', margin: '0' };

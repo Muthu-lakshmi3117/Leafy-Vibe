@@ -16,8 +16,6 @@ const Contact = () => {
     if (!formData.name || !formData.email || !formData.message) return
 
     setIsSubmitting(true)
-
-    // Axios automatic structure matches both email and feedback database injection pipeline
     axios.post("http://localhost:3000/api/contact", formData)
       .then((res) => {
         setToast({ 

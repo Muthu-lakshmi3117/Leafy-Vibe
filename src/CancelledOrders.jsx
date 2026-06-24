@@ -7,9 +7,9 @@ const CancelledOrders = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   
-  // Custom Toast Message State
+
   const [toast, setToast] = useState({ show: false, message: "", isSuccess: true });
-  // Custom Confirmation Modal State
+
   const [confirmModal, setConfirmModal] = useState({ show: false, orderItems: null });
 
   const userId = sessionStorage.getItem("userId");
@@ -64,7 +64,6 @@ const CancelledOrders = () => {
       const price = item.price || 0;
       const qty = item.quantity || 1;
 
-      // --- FIXED: Added isDirectCheckout: true flag to bypass CartPage view ---
       return axios.post(`http://localhost:3000/cart/add`, {
         userId,
         productId: pId,
@@ -72,7 +71,7 @@ const CancelledOrders = () => {
         image,   
         quantity: qty,
         price,
-        isDirectCheckout: true // This locks item away from regular cart list view
+        isDirectCheckout: true 
       });
     });
 
@@ -149,13 +148,12 @@ const CancelledOrders = () => {
         .modal-btn-close { background: #e2e8f0; color: #475569; border: none; padding: 8px 18px; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 500; }
       `}</style>
 
-      {/* --- TOAST CONTAINER DISPLAY --- */}
+      
       <div className={`leafy-toast ${toast.show ? 'show' : ''}`}
         style={{ backgroundColor: toast.isSuccess ? 'rgba(46, 68, 49, 0.95)' : 'rgba(179, 93, 93, 0.95)' }}>
         <span>{toast.message}</span>
       </div>
 
-      {/* --- REORDER CONFIRMATION MODAL --- */}
       {confirmModal.show && (
         <div className="modal-overlay">
           <div className="modal-box">

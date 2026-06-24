@@ -6,20 +6,20 @@ const AddressForm = () => {
   const navigate = useNavigate();
   const location = useLocation(); 
 
-  // Profile data fetch aahi read-only-ah show panna helper state
+ 
   const [profile, setProfile] = useState({
     name: 'Loading...',
     num: 'Loading...',
     pincode: 'Loading...'
   });
 
-  // --- FIXED: Changed state name from streetAddress to address for registration sync ---
+  
   const [address, setAddress] = useState('');
 
-  // --- LEAFY VIBE THEME: Toast Notification Alert State ---
+ 
   const [toast, setToast] = useState({ show: false, message: "", isSuccess: true });
 
-  // --- FETCH REGISTERED DETAILS ON MOUNT ---
+ 
   useEffect(() => {
     const savedUserId = sessionStorage.getItem("userId");
     
@@ -27,13 +27,13 @@ const AddressForm = () => {
       axios.get(`http://localhost:3000/bio/${savedUserId}`)
         .then((response) => {
           if (response.data) {
-            // Profile details locked setup
+           
             setProfile({
               name: response.data.name || 'N/A',
               num: response.data.num || 'N/A',
               pincode: response.data.pincode || 'N/A'
             });
-            // --- FIXED: Maps exactly to the 'address' field fetched from registration ---
+            
             setAddress(response.data.address || '');
             showToastMessage("Registered profile loaded! 🌿", true);
           }
@@ -45,15 +45,12 @@ const AddressForm = () => {
     }
   }, []);
 
-  // --- LEAFY VIBE THEME: Toast Message Helper ---
   const showToastMessage = (message, isSuccess = true) => {
     setToast({ show: true, message, isSuccess });
     setTimeout(() => {
       setToast({ show: false, message: "", isSuccess: true });
     }, 2000); 
   };
-
-  // Submit Handler
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -68,14 +65,12 @@ const AddressForm = () => {
     const finalAddressRequest = { 
       fullName: profile.name,
       phoneNumber: profile.num,
-      streetAddress: address, // Passes the updated/confirmed text forward to the bill
+      streetAddress: address, 
       pincode: profile.pincode,
       userId: savedUserId 
     };
 
     showToastMessage('Address verified successfully! 🏡', true);
-
-    // Dynamic 1.5s delay layout redirect to BillPage
     setTimeout(() => {
       navigate('/bill', { state: { items: cartItems, address: finalAddressRequest } });
     }, 1500);
@@ -90,7 +85,7 @@ const AddressForm = () => {
       boxSizing: 'border-box',
       position: 'relative'
     }}>
-      {/* Dynamic CSS for Premium Shaded Toast */}
+     
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Poppins:wght@300;400;500;600&display=swap');
         body { margin: 0; padding: 0; background-color: #fbf9f6; }
@@ -139,7 +134,7 @@ const AddressForm = () => {
         }
       `}</style>
 
-      {/* PREMIUM DYNAMIC CUSTOM TOAST INJECTOR */}
+     
       <div className={`leafy-toast ${toast.show ? 'show' : ''} ${toast.isSuccess ? 'toast-success' : 'toast-error'}`}>
         <span>{toast.message}</span>
       </div>
@@ -164,7 +159,7 @@ const AddressForm = () => {
           boxSizing: 'border-box'
         }}>
           
-          {/* BRAND LOGO */}
+          
           <div style={{ textTransform: 'lowercase', textAlign: 'center', marginBottom: '25px' }}>
             <h1 style={{ 
               fontFamily: '"Cinzel Decorative", serif', 
@@ -190,7 +185,6 @@ const AddressForm = () => {
 
           <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
             
-            {/* LOCKED PROFILE INFORMATION CARD PANEL */}
             <div style={{
               backgroundColor: '#fafbfa',
               border: '1px solid #e0e5dd',
@@ -221,7 +215,6 @@ const AddressForm = () => {
               </div>
             </div>
 
-            {/* EDITABLE ADDRESS FIELD BLOCK */}
             <div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
                 <label style={labelStyle}>Delivery Address</label>
@@ -237,8 +230,6 @@ const AddressForm = () => {
                 className="aesthetic-input"
               />
             </div>
-            
-            {/* Submit Save Button */}
             <button 
               type="submit"
               style={{ 

@@ -5,17 +5,15 @@ const PaymentPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Bill page track panni vantha states extraction
+  
   const { items, address, totalAmount } = location.state || { items: [], address: {}, totalAmount: 0 };
   const userId = sessionStorage.getItem("userId");
 
-  // Payment UI Controls States (upi, card, cod)
+
   const [activeTab, setActiveTab] = useState('upi'); 
   const [isProcessing, setIsProcessing] = useState(false);
   const [cardData, setCardData] = useState({ number: '', name: '', expiry: '', cvv: '' });
   const [upiId, setUpiId] = useState('');
-
-  // Upgraded custom toast container state management
   const [toast, setToast] = useState({ show: false, message: "", isSuccess: true });
 
   const showToastMessage = (message, isSuccess = true) => {
@@ -35,29 +33,22 @@ const PaymentPage = () => {
     }
 
     setIsProcessing(true);
-
-    // Orders page parser schema breakdown format matrix
     const structuredItemsForDb = items.map(item => ({
       title: item.title || item.name, 
       quantity: item.quantity || item.qty || 1,
       price: Number(item.price) || 0,
       image: item.image || item.img || "https://images.unsplash.com/photo-1485955900006-10f4d324d411?q=80&w=150"
     }));
-
-    // Payment method indicators setup
     const selectedMethod = activeTab === 'upi' ? 'UPI' : activeTab === 'card' ? 'Credit/Debit Card' : 'Cash on Delivery';
 
     const finalOrderPayload = {
       userId: userId,
       items: structuredItemsForDb,
-      total: totalAmount, // Fixed reference fallback key match
-      status: "Order Confirmed", // Aligned directly with orders page UI
-      address: address,
+      total: totalAmount, 
+      status: "Order Confirmed", 
       paymentMethod: selectedMethod,
       date: new Date().toISOString()
     };
-
-    // Simulation transaction latency delay logic wrapper
     setTimeout(() => {
       fetch('http://localhost:3000/api/orders', {
         method: 'POST',
@@ -76,7 +67,7 @@ const PaymentPage = () => {
         console.log("Database successfully recorded your checkout metadata:", data);
         setIsProcessing(false);
         
-        // Show context matching toast confirmation banner
+     
         if (activeTab === 'cod') {
           showToastMessage("Order confirmed via Cash on Delivery! 📦", true);
         } else {
@@ -204,7 +195,6 @@ const PaymentPage = () => {
         }
       `}</style>
 
-      {/* --- BOTANICAL FLOATING TOAST POPUP LAYER --- */}
       <div className={`leafy-toast ${toast.show ? 'show' : ''} ${toast.isSuccess ? 'toast-success' : 'toast-error'}`}>
         <span>{toast.message}</span>
       </div>
@@ -212,14 +202,11 @@ const PaymentPage = () => {
       <div className="payment-box">
         <h2 style={titleStyle}>Checkout Gateway</h2>
         <p style={subTitleStyle}>Select preferred gateway module to finalize order dispatch timeline.</p>
-        
-        {/* Payable Display */}
         <div style={amountCardStyle}>
           <span style={{ fontSize: '11px', color: '#82927e', letterSpacing: '1px', fontWeight: '600' }}>TOTAL AMOUNT PAYABLE</span>
           <span style={{ fontSize: '26px', fontWeight: '700', color: '#1b2e1e', marginTop: '2px' }}>₹{totalAmount}</span>
         </div>
 
-        {/* Updated Horizontal Payment 3-Tab Switcher Mode Controls */}
         <div style={{ display: 'flex', marginBottom: '28px' }}>
           <button 
             type="button" 
@@ -243,8 +230,6 @@ const PaymentPage = () => {
             💵 Cash on Delivery
           </button>
         </div>
-
-        {/* Form conditional fields renderer block */}
         <form onSubmit={handlePaymentSubmitAndSave} style={{ textAlign: 'left' }}>
           
           {activeTab === 'upi' && (
@@ -330,7 +315,7 @@ const PaymentPage = () => {
             </div>
           )}
 
-          {/* Dynamic submit trigger button container */}
+         
           <button 
             type="submit" 
             className="submit-pay-btn"
@@ -353,8 +338,6 @@ const PaymentPage = () => {
     </div>
   );
 };
-
-// Layout global constant theme styles 
 const containerStyle = { padding: '80px 20px', fontFamily: '"Poppins", sans-serif', textAlign: 'center', backgroundColor: '#f6f5f0', minHeight: '100vh', boxSizing: 'border-box' };
 const titleStyle = { fontFamily: '"Cinzel Decorative", serif', color: '#1b2e1e', fontSize: '24px', fontWeight: '700', margin: '0 0 6px 0' };
 const subTitleStyle = { fontFamily: '"Poppins", sans-serif', fontSize: '13px', color: '#82927e', margin: '0 0 28px 0', lineHeight: '1.5' };

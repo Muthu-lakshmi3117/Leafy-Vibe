@@ -56,8 +56,6 @@ const ProfilePage = () => {
     sessionStorage.removeItem("userId");
     navigate('/login');
   };
-
-  // Extract first letter of name for the premium monogram avatar
   const avatarLetter = userData.name ? userData.name.charAt(0).toUpperCase() : "M";
 
   return (
@@ -138,7 +136,6 @@ const ProfilePage = () => {
       `}</style>
 
       <div className="editorial-wrapper">
-        {/* Header Section with Elegant Minimal Monogram */}
         <div style={headerContainerStyle}>
           <div style={monogramAvatarStyle}>
             {avatarLetter}
@@ -154,22 +151,15 @@ const ProfilePage = () => {
             <span style={{ fontSize: '14px' }}>⚠️</span> {err}
           </div>
         )}
-
-        {/* Data Fields */}
         <div style={detailsBlockStyle}>
-          {/* Full Name */}
           <div className="premium-field" style={infoRowStyle}>
             <span style={labelStyle}>MEMBER NAME</span>
             <span style={valueStyle}>{userData.name}</span>
           </div>
-
-          {/* Email Address */}
           <div className="premium-field" style={infoRowStyle}>
             <span style={labelStyle}>DIGITAL ADDR</span>
             <span style={valueStyle}>{userData.email}</span>
           </div>
-
-          {/* Mobile Number */}
           <div className="premium-field" style={infoRowStyle}>
             <span style={labelStyle}>COMMUNICATION NODE</span>
             <span style={valueStyle}>{userData.mobile}</span>
@@ -177,8 +167,6 @@ const ProfilePage = () => {
         </div>
 
         <div style={dividerStyle}></div>
-
-        {/* Bottom Actions */}
         <div style={ctaContainerStyle}>
           <button className="action-shop-btn" onClick={() => navigate('/products')}>
             Browse Collections 🛒
@@ -191,8 +179,6 @@ const ProfilePage = () => {
     </div>
   );
 };
-
-// --- STYLING GRAPHICS ---
 const containerStyle = { 
   padding: '24px', 
   minHeight: '100vh', 

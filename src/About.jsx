@@ -45,28 +45,27 @@ const About = () => {
         }
       `}</style>
 
-      {/* --- Aesthetic Watermark Vector Background --- */}
+      
       <svg className="floating-art" style={{ position: 'absolute', top: '10%', right: '-5%', width: '400px', opacity: 0.03, pointerEvents: 'none' }} viewBox="0 0 24 24" fill="none" stroke="#32412e" strokeWidth="1">
         <path d="M2 22C2 22 6 14 12 14C18 14 22 22 22 22" strokeWidth="1"/>
         <path d="M12 2V14" />
         <path d="M12 4C14 5 18 6 20 8" />
       </svg>
 
-      {/* Main Content Container - Split Layout */}
+    
       <div className="main-wrapper" style={{
         display: 'flex',
         maxWidth: '1200px',
         width: '100%',
         margin: 'auto',
-        padding: '60px 40px 120px 40px', /* Bottom padding increased for the lower image overflow */
-        boxSizing: 'border-box',
+        padding: '60px 40px 120px 40px', 
         justifyContent: 'space-between',
         alignItems: 'center',
         zIndex: 2,
         gap: '40px'
       }}>
         
-        {/* LEFT PANEL: Brand Typography & Editorial Story */}
+       
         <div className="left-panel" style={{ flex: 1, maxWidth: '500px', textAlign: 'left' }}>
           <span style={{
             fontSize: '11px',
@@ -143,7 +142,7 @@ const About = () => {
           </Link>
         </div>
 
-        {/* RIGHT PANEL: Asymmetric Luxury Image Grid */}
+        
         <div className="right-panel" style={{ 
           flex: 1, 
           maxWidth: '550px', 
@@ -154,7 +153,7 @@ const About = () => {
           width: '100%'
         }}>
           
-          {/* Main Large Visual */}
+         
           <div style={{
             gridColumn: '1 / span 10',
             gridRow: '1',
@@ -171,7 +170,7 @@ const About = () => {
             />
           </div>
 
-          {/* Overlapping Secondary Image (Shifted Further Down) */}
+          
           <div style={{
             gridColumn: '7 / span 6',
             gridRow: '1',
@@ -181,14 +180,14 @@ const About = () => {
           }}>
             <div style={{
               position: 'absolute',
-              bottom: '-190px', /* Keela nalla erakiyaachu (Pazhasu -120px irundhadhu) */
+              bottom: '-190px', 
               right: '0',
               width: '100%',
               height: '240px',
               borderRadius: '20px',
               overflow: 'hidden',
               border: '8px solid #fbf9f6', 
-              boxShadow: '0 18px 40px rgba(0,0,0,0.12)', /* Shadow adjusted for better depth */
+              boxShadow: '0 18px 40px rgba(0,0,0,0.12)', 
               backgroundColor: '#eef2ed'
             }}>
               <img 

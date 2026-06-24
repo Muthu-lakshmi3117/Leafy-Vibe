@@ -9,16 +9,14 @@ const Login = () => {
     email: "",
     pass: ""
   })
-
-  // --- FIXED: Toast Notification Alert State ---
   const [toast, setToast] = useState({ show: false, message: "", isSuccess: true })
 
-  // Input change handle panna
+  
   let chg = (e) => {
     setval({ ...val, [e.target.name]: e.target.value })
   }
 
-  // --- FIXED: Toast Message Helper (Closes in 2 seconds) ---
+ 
   const showToastMessage = (message, isSuccess = true) => {
     setToast({ show: true, message, isSuccess });
     setTimeout(() => {
@@ -26,44 +24,32 @@ const Login = () => {
     }, 2000); // 2000ms = 2 Seconds
   };
 
-  // Login click panni check panna
   let handleLogin = () => {
     if (!val.email || !val.pass) {
-      // --- FIXED: Alert message completely converted to error toast ---
       showToastMessage("Please fill all fields! ⚠️", false)
       return
     }
-
-    // Backend-la irundhu user collection data-va edukurom
     axios.get("http://localhost:3000/user")
       .then((res) => {
         const usersList = res.data; 
-
-        // Frontend-la loop panni user irukaangala nu check panrom
         const userFound = usersList.find(user => user.email === val.email && user.pass === val.pass);
 
         if (userFound) {
-          // --- FIXED: Success Premium Toast Message ---
           showToastMessage(`Welcome Back! Login Success 🎉`, true)
           console.log("Logged In User Details:", userFound)
 
-          // Storing user ID in sessionStorage so Shop, Cart & Profile can read it
           const userId = userFound._id || userFound.id;
           sessionStorage.setItem("userId", userId); 
-
-          // Toast 2 செகண்ட் தெரிஞ்சு மறைஞ்ச உடனே ப்ரொஃபைல் பக்கத்துக்கு போகும்
           setTimeout(() => {
             navigate("/profile"); 
           }, 2000);
 
         } else {
-          // --- FIXED: Validation error toast ---
           showToastMessage("Invalid Email or Password! ❌", false)
         }
       })
       .catch((err) => {
         console.error(err)
-        // --- FIXED: Server breakdown error toast ---
         showToastMessage("Server problem. Login failed! ⚙️", false)
       })
   }
@@ -77,13 +63,11 @@ const Login = () => {
       boxSizing: 'border-box',
       position: 'relative'
     }}>
-      {/* Dynamic CSS for Premium Shaded Toast */}
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Poppins:wght@300;400;500;600&display=swap');
         body { margin: 0; padding: 0; background-color: #fbf9f6; }
         .aesthetic-input::placeholder { color: #c2c9bc; font-size: 12px; }
         
-        /* ENHANCED GLASSMORPHISM TOAST BOX */
         .leafy-toast {
           position: fixed;
           top: 40px;
@@ -127,7 +111,7 @@ const Login = () => {
         }
       `}</style>
 
-      {/* --- PREMIUM DYNAMIC CUSTOM TOAST INJECTOR --- */}
+     
       <div className={`leafy-toast ${toast.show ? 'show' : ''} ${toast.isSuccess ? 'toast-success' : 'toast-error'}`}>
         <span>{toast.message}</span>
       </div>
@@ -152,7 +136,7 @@ const Login = () => {
           boxSizing: 'border-box'
         }}>
           
-          {/* --- FIXED: BRAND LOGO TO LEAFY VIBE --- */}
+        
           <div style={{ textTransform: 'lowercase', textAlign: 'center', marginBottom: '30px' }}>
             <h1 style={{ 
               fontFamily: '"Cinzel Decorative", serif', 
@@ -226,7 +210,7 @@ const Login = () => {
               Login
             </button>
 
-            {/* --- FIXED: Link text changed to Leafy Vibe --- */}
+           
             <div style={{ 
               textAlign: 'center', 
               marginTop: '12px', 

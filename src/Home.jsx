@@ -43,7 +43,7 @@ const Home = () => {
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght=0,400;1,600&family=Poppins:wght=300;400;500;600;700&display=swap');
         body { margin: 0; background-color: #fbf9f6; overflow-x: hidden; }
         
-        /* Smooth Fade & Zoom for Background */
+        
         .hero-bg {
           opacity: 0;
           transform: scale(1.05);
@@ -77,7 +77,6 @@ const Home = () => {
           box-shadow: 0 15px 30px rgba(50, 65, 46, 0.3);
         }
 
-        /* Modern Navigation Dots */
         .dot {
           width: 10px;
           height: 10px;
@@ -91,8 +90,6 @@ const Home = () => {
           width: 30px;
           border-radius: 10px;
         }
-
-        /* Pinterest Interactive Hover Cards */
         .aesthetic-card {
           position: relative;
           height: 400px;
@@ -140,7 +137,6 @@ const Home = () => {
         }
       `}</style>
 
-      {/* --- HERO SECTION: FULL TEXT EXPOSURE (NO CARDS / NO BLUR) --- */}
       <div style={{
         position: 'relative',
         width: '100%',
@@ -156,7 +152,6 @@ const Home = () => {
             key={idx} 
             className={`hero-bg ${currentSlide === idx ? 'active' : ''}`}
             style={{
-              /* Slightly increased background darkness for crisp white text visibility */
               backgroundImage: `linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)), url(${slide.image})`,
               backgroundSize: 'cover',
               backgroundPosition: 'center'
@@ -164,7 +159,7 @@ const Home = () => {
           />
         ))}
 
-        {/* Text Container directly over image (No Box background, layout is naked & raw) */}
+       
         <div style={{
           position: 'relative',
           zIndex: 5,
@@ -179,7 +174,7 @@ const Home = () => {
             fontSize: '12px', 
             letterSpacing: '6px', 
             textTransform: 'uppercase', 
-            color: '#c2d1c0', /* Aesthetic light sage color */
+            color: '#c2d1c0', 
             marginBottom: '18px',
             fontWeight: '500',
             display: 'block'
@@ -189,11 +184,11 @@ const Home = () => {
 
           <h1 style={{
             fontFamily: '"Playfair Display", serif',
-            fontSize: '52px', /* Elevated size for bold raw presence */
+            fontSize: '52px',
             margin: '0 0 20px 0',
             fontWeight: '600',
             lineHeight: '1.2',
-            textShadow: '0 2px 10px rgba(0,0,0,0.3)' /* Subtle deep shadow for text separation */
+            textShadow: '0 2px 10px rgba(0,0,0,0.3)'
           }}>
             {slides[currentSlide].title}
           </h1>
@@ -216,7 +211,7 @@ const Home = () => {
           </Link>
         </div>
 
-        {/* Slider Indicator Dots */}
+      
         <div style={{
           position: 'absolute',
           bottom: '30px',
@@ -234,7 +229,7 @@ const Home = () => {
         </div>
       </div>
 
-      {/* --- SECTION 2: INTERACTIVE HOVER IMAGE GRID --- */}
+    
       <div style={{
         maxWidth: '1200px',
         margin: '90px auto 120px auto',
@@ -281,7 +276,7 @@ const Home = () => {
             </div>
           </div>
 
-          {/* Card 2 */}
+       
           <div className="aesthetic-card">
             <img 
               className="card-img" 
@@ -298,7 +293,7 @@ const Home = () => {
             </div>
           </div>
 
-          {/* Card 3 */}
+      
           <div className="aesthetic-card">
             <img 
               className="card-img" 

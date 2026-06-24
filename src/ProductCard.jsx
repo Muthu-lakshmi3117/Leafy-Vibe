@@ -4,7 +4,6 @@ import axios from 'axios';
 const ProductCard = ({ product }) => {
   
   const handleAddToCart = () => {
-    // Exact payload explicitly matching backend properties
     const payload = {
       userId: sessionStorage.getItem("userId") || "user_test_123", 
       productId: product._id || product.id,
@@ -26,7 +25,6 @@ const ProductCard = ({ product }) => {
 
   return (
     <div style={cardStyle}>
-      {/* Product Image Screen View */}
       <div style={imageContainerStyle}>
         <img 
           src={product.image} 
@@ -34,20 +32,14 @@ const ProductCard = ({ product }) => {
           style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
         />
       </div>
-
-      {/* Product Information details */}
       <h3 style={titleStyle}>{product.title}</h3>
       <p style={priceStyle}>Rs. {product.price}</p>
-      
-      {/* PURE ACTION BUTTON */}
       <button onClick={handleAddToCart} style={buttonStyle}>
         Add to Cart
       </button>
     </div>
   );
 };
-
-// --- BASIC STYLING SETUP ---
 const cardStyle = {
   backgroundColor: '#ffffff',
   padding: '20px',
